@@ -44,7 +44,7 @@ class HandTracker:
             raise ValueError(
                 "Invalid hand_type. It should be either 'left' or 'right'."
             )
-        thresh = (lst.landmark[0].y * 100 - lst.landmark[9].y * 100) / 2 + 5  # added a small constant to the threshold
+        thresh = (lst.landmark[0].y * 100 - lst.landmark[9].y * 100) / 2 + 5  # added a small constant to the threshold -> didn't do jackshit copilot
         finger_pairs = [(5, 8), (9, 12), (13, 16), (17, 20)]
         downwards_fingers = [
             int(
