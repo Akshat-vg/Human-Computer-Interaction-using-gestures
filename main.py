@@ -3,6 +3,7 @@ import modules.tracker as tr
 from modules.media_and_brightness_control import MediaControl
 from modules.app_control import AppControl
 from modules.browser_control import BrowserControl
+from modules.user_def_controls import UserDefControls
 
 
 def detect_gesture(raised_fingers):
@@ -52,14 +53,17 @@ while cap.isOpened():
                         print(current_gesture)
                         prev_gesture = current_gesture
 
+            # volume control, gesture left: thumb
             if handedness.lower() == "right" and current_gesture == "thumb":
                 volume_control = MediaControl(hand_tracker)
                 volume_control.control_volume(frame)
 
+            # media control, gesture left: thumb and index
             if handedness.lower() == "right" and current_gesture == "thumb and index":
                 media_control = MediaControl(hand_tracker)
                 media_control.control_media(raised_fingers)
 
+            # brightness control, gesture left: thumb, index and middle
             if (
                 handedness.lower() == "right"
                 and current_gesture == "thumb, index and middle"
@@ -67,13 +71,20 @@ while cap.isOpened():
                 brightness_control = MediaControl(hand_tracker)
                 brightness_control.control_brightness(frame)
 
+            # app control, gesture left: index
             if handedness.lower() == "right" and current_gesture == "index":
                 app_control = AppControl(hand_tracker)
                 app_control.window_nav(raised_fingers)
 
+            # browser control, gesture left: index and middle
             if handedness.lower() == "right" and current_gesture == "index and middle":
                 browser_control = BrowserControl(hand_tracker)
                 browser_control.tab_nav(raised_fingers)
+            
+            # user defined controls, gesture left: all
+            if handedness.lower() == "right" and current_gesture == "all":
+                user_def_controls = UserDefControls(hand_tracker)
+                user_def_controls.volume_control(raised_fingers)
 
     hand_tracker.frame_counter += 1
 
