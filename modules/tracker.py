@@ -37,13 +37,14 @@ class HandTracker:
         return raised_fingers[::-1] if hand_type == "left" else raised_fingers
 
     def detect_downwards_fingers(self, lst, hand_type):
+        # this is not working as intended can someone fix
         if self.frame_counter % self.cooldown_frames != 0:
             return None
         if hand_type not in ["left", "right"]:
             raise ValueError(
                 "Invalid hand_type. It should be either 'left' or 'right'."
             )
-        thresh = (lst.landmark[0].y * 100 - lst.landmark[9].y * 100) / 2
+        thresh = (lst.landmark[0].y * 100 - lst.landmark[9].y * 100) / 2 + 5  # added a small constant to the threshold
         finger_pairs = [(5, 8), (9, 12), (13, 16), (17, 20)]
         downwards_fingers = [
             int(
@@ -53,6 +54,7 @@ class HandTracker:
             for finger_tip, knuckle in finger_pairs
         ]
 
+        print(downwards_fingers[::-1] if hand_type == "left" else downwards_fingers[1:])
         return downwards_fingers[::-1] if hand_type == "left" else downwards_fingers[1:]
 
     def find_position(self, frame):

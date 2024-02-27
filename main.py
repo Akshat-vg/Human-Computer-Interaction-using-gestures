@@ -1,7 +1,8 @@
 import cv2
 import modules.tracker as tr
-from modules.media_control import MediaControl
+from modules.media_and_brightness_control import MediaControl
 from modules.app_control import AppControl
+from modules.browser_control import BrowserControl
 
 
 def detect_gesture(raised_fingers):
@@ -53,11 +54,26 @@ while cap.isOpened():
 
             if handedness.lower() == "right" and current_gesture == "thumb":
                 volume_control = MediaControl(hand_tracker)
-                frame = volume_control.control_volume(frame)
+                volume_control.control_volume(frame)
+
+            if handedness.lower() == "right" and current_gesture == "thumb and index":
+                media_control = MediaControl(hand_tracker)
+                media_control.control_media(raised_fingers)
+
+            if (
+                handedness.lower() == "right"
+                and current_gesture == "thumb, index and middle"
+            ):
+                brightness_control = MediaControl(hand_tracker)
+                brightness_control.control_brightness(frame)
 
             if handedness.lower() == "right" and current_gesture == "index":
                 app_control = AppControl(hand_tracker)
                 app_control.window_nav(raised_fingers)
+
+            if handedness.lower() == "right" and current_gesture == "index and middle":
+                browser_control = BrowserControl(hand_tracker)
+                browser_control.tab_nav(raised_fingers)
 
     hand_tracker.frame_counter += 1
 
