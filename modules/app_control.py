@@ -1,3 +1,4 @@
+import platform
 import pyautogui
 
 
@@ -6,15 +7,41 @@ class AppControl:
         self.hand_tracker = hand_tracker
 
     def window_nav(self, raised_fingers):
-        if raised_fingers is not None:
+        if raised_fingers is not None and raised_fingers != [0, 0, 0, 0, 0]:
             print(raised_fingers)
             if raised_fingers == [0, 0, 0, 0, 1]:
-                pyautogui.hotkey("command", "tab")
+                # switch window forward, gesture: little
+                if platform.system() == "Darwin":
+                    pyautogui.hotkey("command", "tab")
+                elif platform.system() == "Windows":
+                    pyautogui.hotkey("alt", "tab")
             elif raised_fingers == [1, 0, 0, 0, 0]:
-                pyautogui.hotkey("command", "shift", "tab")
+                # switch window backward, gesture: thumb
+                if platform.system() == "Darwin":
+                    pyautogui.hotkey("command", "shift", "tab")
+                elif platform.system() == "Windows":
+                    pyautogui.hotkey("alt", "shift", "tab")
             elif raised_fingers == [1, 1, 1, 1, 1]:
-                pyautogui.hotkey("command", "m")
+                # minimize window, gesture: all
+                if platform.system() == "Darwin":
+                    pyautogui.hotkey("command", "m")
+                elif platform.system() == "Windows":
+                    pyautogui.hotkey("win", "m")
             elif raised_fingers == [0, 0, 0, 1, 1]:
-                pyautogui.hotkey("command", "w")
-
-    # time.sleep(0.5) -> this is slowing the the program a lot. Found alternative, there's no reason for this comment to exist so, can someone please make a commit "fix: fixed comment" for just this one line and nothing else, thanks much appreciated
+                # close window, gesture: ring and little
+                if platform.system() == "Darwin":
+                    pyautogui.hotkey("command", "w")
+                elif platform.system() == "Windows":
+                    pyautogui.hotkey("alt", "f4")
+            elif raised_fingers == [0, 1, 0, 0, 1]:
+                # switch window(same application different windows) forward, gesture: index and little
+                if platform.system() == "Darwin":
+                    pyautogui.hotkey("command", "`")
+                elif platform.system() == "Windows":
+                    pyautogui.hotkey("alt", "esc")
+            elif raised_fingers == [0, 1, 1, 1, 1]:
+                # close a window of the application, gesture: index, middle, ring and little
+                if platform.system() == "Darwin":
+                    pyautogui.hotkey("command", "w")
+                elif platform.system() == "Windows":
+                    pyautogui.hotkey("ctrl", "w")
