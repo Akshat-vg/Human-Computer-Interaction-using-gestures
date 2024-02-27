@@ -1,9 +1,10 @@
 import cv2
-import modules.tracker as tr
+from modules.tracker import HandTracker
 from modules.media_and_brightness_control import MediaControl
 from modules.app_control import AppControl
 from modules.browser_control import BrowserControl
 from modules.user_def_controls import UserDefControls
+from modules.mouse_control import MouseControl
 
 
 def detect_gesture(raised_fingers):
@@ -26,7 +27,7 @@ cap = cv2.VideoCapture(0)
 cap.set(3, 640)
 cap.set(4, 480)
 
-hand_tracker = tr.HandTracker()
+hand_tracker = HandTracker()
 
 prev_gesture = None
 current_gesture = None
@@ -58,18 +59,18 @@ while cap.isOpened():
                 volume_control = MediaControl(hand_tracker)
                 volume_control.control_volume(frame)
 
-            # media control, gesture left: thumb and index
+            # brightness control, gesture left: thumb and index
             if handedness.lower() == "right" and current_gesture == "thumb and index":
-                media_control = MediaControl(hand_tracker)
-                media_control.control_media(raised_fingers)
+                brightness_control = MediaControl(hand_tracker)
+                brightness_control.control_brightness(frame)
 
-            # brightness control, gesture left: thumb, index and middle
+            # media control, gesture left: thumb, index and middle
             if (
                 handedness.lower() == "right"
                 and current_gesture == "thumb, index and middle"
             ):
-                brightness_control = MediaControl(hand_tracker)
-                brightness_control.control_brightness(frame)
+                media_control = MediaControl(hand_tracker)
+                media_control.control_media(raised_fingers)
 
             # app control, gesture left: index
             if handedness.lower() == "right" and current_gesture == "index":
@@ -80,6 +81,11 @@ while cap.isOpened():
             if handedness.lower() == "right" and current_gesture == "index and middle":
                 browser_control = BrowserControl(hand_tracker)
                 browser_control.tab_nav(raised_fingers)
+
+            # mouse control, gesture left: index, middle and ring
+            if handedness.lower() == "right" and current_gesture == "index, middle and ring":
+                mouse_control = MouseControl(hand_tracker, frame)
+                mouse_control.control_mouse(raised_fingers, frame)
             
             # user defined controls, gesture left: all
             if handedness.lower() == "right" and current_gesture == "all":
@@ -88,7 +94,7 @@ while cap.isOpened():
 
     hand_tracker.frame_counter += 1
 
-    cv2.imshow("Frame", frame)
+    # cv2.imshow("Frame", frame)
     if cv2.waitKey(1) & 0xFF == ord("q"):
         break
 
