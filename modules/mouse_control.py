@@ -38,9 +38,12 @@ class MouseControl:
                 self.mouse.move(self.screen_width - c_loc_x, c_loc_y)
                 self.prev_x, self.prev_y = c_loc_x, c_loc_y
 
+        # everything except thumb
         elif raised_fingers == [0, 1, 1, 1, 1]:
             # scroll up
             self.mouse.wheel(-3)
+
+        # all fingers
         elif raised_fingers == [1, 1, 1, 1, 1]:
             # scroll down
             self.mouse.wheel(3)
