@@ -24,8 +24,8 @@ class MediaControl:
                 interface = devices.Activate(
                     IAudioEndpointVolume._iid_, CLSCTX_ALL, None
                 )
-                volume = interface.QueryInterface(IAudioEndpointVolume)
-                volume.SetMasterVolumeLevel(volume, None)
+                device_volume = interface.QueryInterface(IAudioEndpointVolume)
+                device_volume.SetMasterVolumeLevel(volume, None)
 
             elif platform.system() == "Darwin":
                 import subprocess
@@ -34,6 +34,10 @@ class MediaControl:
                 subprocess.run(
                     ["osascript", "-e", f"set volume output volume {volume}"]
                 )
+
+            else:
+                # could have done it for linux, but don't have a linux machine to test
+                raise NotImplementedError("This OS is not supported")
 
     def control_media(self, raised_fingers):
         # not working on darwin
@@ -56,6 +60,10 @@ class MediaControl:
             elif platform.system() == "Darwin":
                 # could do it if found the key code for media keys
                 pass
+
+            else:
+                # could have done it for linux, but don't have a linux machine to test
+                raise NotImplementedError("This OS is not supported")
 
     def control_brightness(self, frame):
         landmarks = self.hand_tracker.find_position(frame)
