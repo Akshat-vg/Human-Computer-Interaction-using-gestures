@@ -4,6 +4,10 @@
 import uuid
 import socket
 import pymongo
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 
 def get_unique_id():
@@ -15,9 +19,7 @@ def get_unique_id():
 unique_id = get_unique_id()
 print(unique_id)
 
-client = pymongo.MongoClient(
-    "mongodb+srv://adityachintala27:4aKbZXzf2xWb7vdG@majorproject.rjgxrwd.mongodb.net/"
-)
+client = pymongo.MongoClient(os.getenv("MONGODB.URI"))
 
 db = client["hci"]
 
