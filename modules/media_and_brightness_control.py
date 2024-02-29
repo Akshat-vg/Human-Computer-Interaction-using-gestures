@@ -25,6 +25,7 @@ class MediaControl:
                     IAudioEndpointVolume._iid_, CLSCTX_ALL, None
                 )
                 device_volume = interface.QueryInterface(IAudioEndpointVolume)
+                # check shit her, volume not increasing
                 device_volume.SetMasterVolumeLevel(volume, None)
 
             elif platform.system() == "Darwin":

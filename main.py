@@ -32,7 +32,7 @@ hand_tracker = HandTracker()
 prev_gesture = None
 current_gesture = None
 
-while cap.isOpened():
+while True:
     ret, frame = cap.read()
     if not ret:
         break
@@ -59,6 +59,7 @@ while cap.isOpened():
                 volume_control = MediaControl(hand_tracker)
                 volume_control.control_volume(frame)
 
+            # check shit here, need to realign values.
             # brightness control, gesture left: thumb and index
             if handedness.lower() == "right" and current_gesture == "thumb and index":
                 brightness_control = MediaControl(hand_tracker)
@@ -94,7 +95,7 @@ while cap.isOpened():
 
     hand_tracker.frame_counter += 1
 
-    # cv2.imshow("Frame", frame)
+    cv2.imshow("Frame", frame)
     if cv2.waitKey(1) & 0xFF == ord("q"):
         break
 
