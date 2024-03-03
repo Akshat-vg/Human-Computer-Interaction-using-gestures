@@ -33,8 +33,8 @@ prev_gesture = None
 current_gesture = None
 
 while True:
-    ret, frame = cap.read()
-    if not ret:
+    success, frame = cap.read()
+    if not success:
         break
     frame = cv2.flip(frame, 1)
     results = hand_tracker.hands.process(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
@@ -84,10 +84,13 @@ while True:
                 browser_control.tab_nav(raised_fingers)
 
             # mouse control, gesture left: index, middle and ring
-            if handedness.lower() == "right" and current_gesture == "index, middle and ring":
+            if (
+                handedness.lower() == "right"
+                and current_gesture == "index, middle and ring"
+            ):
                 mouse_control = MouseControl(hand_tracker, frame)
                 mouse_control.control_mouse(raised_fingers, frame)
-            
+
             # user defined controls, gesture left: all
             if handedness.lower() == "right" and current_gesture == "all":
                 user_def_controls = UserDefControls(hand_tracker)

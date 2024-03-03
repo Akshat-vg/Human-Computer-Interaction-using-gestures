@@ -13,10 +13,21 @@ class MediaControl:
         if landmarks is not None and len(landmarks) != 0:
             x1, y1 = landmarks[4][1], landmarks[4][2]
             x2, y2 = landmarks[8][1], landmarks[8][2]
-            length = math.hypot(x2 - x1, y2 - y1)
+
+            mkx, mky = landmarks[9][1], landmarks[9][2]
+            wx, wy = landmarks[0][1], landmarks[0][2]
+
+            tipLength = (x2 - x1) ** 2 + (y2 - y1) ** 2
+            palmLength = (wx - mkx) ** 2 + (wy - mky) ** 2
+            ratio = tipLength / palmLength
 
             if platform.system() == "Windows":
-                volume = np.interp(length, [35, 300], [-65, 0])
+                volume = np.interp(ratio, [0.15, 1.0], [-65.25, 0.0])
+
+                """
+                The volume level is a float value between -65.25 and 0.0.
+                                
+                """
                 from comtypes import CLSCTX_ALL
                 from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
 
@@ -25,13 +36,14 @@ class MediaControl:
                     IAudioEndpointVolume._iid_, CLSCTX_ALL, None
                 )
                 device_volume = interface.QueryInterface(IAudioEndpointVolume)
+                # print(volume, device_volume.GetMasterVolumeLevel())
                 # check shit her, volume not increasing
                 device_volume.SetMasterVolumeLevel(volume, None)
 
             elif platform.system() == "Darwin":
                 import subprocess
 
-                volume = np.interp(length, [35, 300], [0, 100])
+                volume = np.interp(ratio, [0.15, 1.5], [0, 100])
                 subprocess.run(
                     ["osascript", "-e", f"set volume output volume {volume}"]
                 )
@@ -71,12 +83,19 @@ class MediaControl:
         if landmarks is not None and len(landmarks) != 0:
             x1, y1 = landmarks[4][1], landmarks[4][2]
             x2, y2 = landmarks[8][1], landmarks[8][2]
-            length = math.hypot(x2 - x1, y2 - y1)
+
+            mkx, mky = landmarks[9][1], landmarks[9][2]
+            wx, wy = landmarks[0][1], landmarks[0][2]
+
+            tipLength = (x2 - x1) ** 2 + (y2 - y1) ** 2
+            palmLength = (wx - mkx) ** 2 + (wy - mky) ** 2
+
+            ratio = tipLength / palmLength
 
             if platform.system() == "Windows":
                 import screen_brightness_control as sbc
 
-                brightness = np.interp(length, [35, 300], [0, 100])
+                brightness = int(np.interp(ratio, [0.15, 1.5], [0, 100]))
                 sbc.set_brightness(brightness)
 
             elif platform.system() == "Darwin":
@@ -84,7 +103,7 @@ class MediaControl:
                 # link to repo: https://github.com/nriley/brightness
                 import subprocess
 
-                brightness = np.interp(length, [35, 300], [0, 1])
+                brightness = math.ceil(np.interp(ratio, [0.15, 1.5], [0, 100]))
                 subprocess.run(["brightness", str(brightness)])
 
             else:
