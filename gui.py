@@ -12,7 +12,7 @@ class GestureEditor:
         self.master.rowconfigure(0, weight=1)
         
         self.style = ttk.Style(self.master)
-        self.master.tk.call("source", r"C:\Users\medha\Desktop\Forest-ttk-theme-master\Forest-ttk-theme-master\forest-dark.tcl")
+        self.master.tk.call("source", r"C:\Users\medha\Downloads\Human-Computer-Interaction-using-gestures-medhaj\Human-Computer-Interaction-using-gestures-medhaj\forest-dark.tcl")
         self.style.theme_use("forest-dark")
         
         self.init_variables()
@@ -24,10 +24,10 @@ class GestureEditor:
         self.selected_gesture = tk.StringVar(value="")
         self.key_bind_var = tk.StringVar()
         self.video_paths = {
-            "Video 1": r"C:\Users\medha\Desktop\Forest-ttk-theme-master\Forest-ttk-theme-master\toystory.mp4",
-            "Video 2": r"C:\Users\medha\Desktop\Forest-ttk-theme-master\Forest-ttk-theme-master\aa.mp4",
-            "Video 3": r"C:\Users\medha\Desktop\Forest-ttk-theme-master\Forest-ttk-theme-master\bb).mp4",
-            "Video 4": r"C:\Users\medha\Desktop\Forest-ttk-theme-master\Forest-ttk-theme-master\aa.mp4"
+            "Video 1": r"C:\Users\medha\Downloads\Human-Computer-Interaction-using-gestures-medhaj\Human-Computer-Interaction-using-gestures-medhaj\toystory.mp4",
+            "Video 2": r"C:\Users\medha\Downloads\Human-Computer-Interaction-using-gestures-medhaj\Human-Computer-Interaction-using-gestures-medhaj\aa.mp4",
+            "Video 3": r"C:\Users\medha\Downloads\Human-Computer-Interaction-using-gestures-medhaj\Human-Computer-Interaction-using-gestures-medhaj\bb).mp4",
+            "Video 4": r"C:\Users\medha\Downloads\Human-Computer-Interaction-using-gestures-medhaj\Human-Computer-Interaction-using-gestures-medhaj\aa.mp4"
         }
         self.video_player = None
         self.preview_label = None
@@ -131,3 +131,4 @@ if __name__ == "__main__":
     root = tk.Tk()
     app = GestureEditor(root)
     root.mainloop()
+
