@@ -1,4 +1,5 @@
 import cv2
+import mediapipe as mp
 from modules.tracker import HandTracker
 from modules.media_and_brightness_control import MediaControl
 from modules.app_control import AppControl
@@ -35,7 +36,6 @@ current_gesture = None
 while True:
     try:
         success, frame = cap.read()
-        cv2.imshow("Frame", frame)
         if not success:
             break
         frame = cv2.flip(frame, 1)
@@ -103,10 +103,11 @@ while True:
                     user_def_controls.volume_control(raised_fingers)
 
         # hand_tracker.frame_counter += 1
+        cv2.imshow("Frame", frame)
         if cv2.waitKey(1) & 0xFF == ord("q"):
             break
     except Exception as e:
-        print("error is: ", e)
+        print("error is: ", e.message)
 
 cap.release()
 cv2.destroyAllWindows()

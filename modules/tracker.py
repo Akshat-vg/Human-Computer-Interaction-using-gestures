@@ -60,12 +60,25 @@ class HandTracker:
     def find_position(self, frame):
         if self.frame_counter % self.smooth_cooldown_frames != 0:
             return None
-        results = self.hands.process(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
+        x_list = []
+        y_list = []
         landmarks = []
+        results = self.hands.process(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
         if results.multi_hand_landmarks:
             for hand_landmarks in results.multi_hand_landmarks:
                 for id, lm in enumerate(hand_landmarks.landmark):
                     h, w, c = frame.shape
                     cx, cy = int(lm.x * w), int(lm.y * h)
+                    x_list.append(cx)
+                    y_list.append(cy)
                     landmarks.append([id, cx, cy])
+                x_min, x_max = min(x_list), max(x_list)
+                y_min, y_max = min(y_list), max(y_list)
+                cv2.rectangle(
+                    frame,
+                    (x_min - 20, y_min - 20),
+                    (x_max + 20, y_max + 20),
+                    (0, 255, 0),
+                    2,
+                )
         return landmarks
