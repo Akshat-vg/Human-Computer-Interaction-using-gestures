@@ -33,74 +33,80 @@ prev_gesture = None
 current_gesture = None
 
 while True:
-    success, frame = cap.read()
-    if not success:
-        break
-    frame = cv2.flip(frame, 1)
-    results = hand_tracker.hands.process(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
-    if results.multi_hand_landmarks:
-        for hand_landmarks in results.multi_hand_landmarks:
+    try:
+        success, frame = cap.read()
+        cv2.imshow("Frame", frame)
+        if not success:
+            break
+        frame = cv2.flip(frame, 1)
+        results = hand_tracker.hands.process(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
+        if results.multi_hand_landmarks:
+            for hand_landmarks in results.multi_hand_landmarks:
+                handedness = results.multi_handedness[0].classification[0].label
+                raised_fingers = hand_tracker.detect_raised_fingers(
+                    hand_landmarks, handedness.lower()
+                )
 
-            handedness = results.multi_handedness[0].classification[0].label
+                if handedness.lower() == "left":
+                    if raised_fingers is not None:
+                        current_gesture = detect_gesture(raised_fingers)
+                        if current_gesture and current_gesture != prev_gesture:
+                            print(current_gesture)
+                            prev_gesture = current_gesture
 
-            raised_fingers = hand_tracker.detect_raised_fingers(
-                hand_landmarks, handedness.lower()
-            )
+                # volume control, gesture left: thumb
+                if handedness.lower() == "right" and current_gesture == "thumb":
+                    volume_control = MediaControl(hand_tracker)
+                    volume_control.control_volume(frame)
 
-            if handedness.lower() == "left":
-                if raised_fingers is not None:
-                    current_gesture = detect_gesture(raised_fingers)
-                    if current_gesture and current_gesture != prev_gesture:
-                        print(current_gesture)
-                        prev_gesture = current_gesture
+                # check shit here, need to realign values.
+                # brightness control, gesture left: thumb and index
+                if (
+                    handedness.lower() == "right"
+                    and current_gesture == "thumb and index"
+                ):
+                    brightness_control = MediaControl(hand_tracker)
+                    brightness_control.control_brightness(frame)
 
-            # volume control, gesture left: thumb
-            if handedness.lower() == "right" and current_gesture == "thumb":
-                volume_control = MediaControl(hand_tracker)
-                volume_control.control_volume(frame)
+                # media control, gesture left: thumb, index and middle
+                if (
+                    handedness.lower() == "right"
+                    and current_gesture == "thumb, index and middle"
+                ):
+                    media_control = MediaControl(hand_tracker)
+                    media_control.control_media(raised_fingers)
 
-            # check shit here, need to realign values.
-            # brightness control, gesture left: thumb and index
-            if handedness.lower() == "right" and current_gesture == "thumb and index":
-                brightness_control = MediaControl(hand_tracker)
-                brightness_control.control_brightness(frame)
+                # app control, gesture left: index
+                if handedness.lower() == "right" and current_gesture == "index":
+                    app_control = AppControl(hand_tracker)
+                    app_control.window_nav(raised_fingers)
 
-            # media control, gesture left: thumb, index and middle
-            if (
-                handedness.lower() == "right"
-                and current_gesture == "thumb, index and middle"
-            ):
-                media_control = MediaControl(hand_tracker)
-                media_control.control_media(raised_fingers)
+                # browser control, gesture left: index and middle
+                if (
+                    handedness.lower() == "right"
+                    and current_gesture == "index and middle"
+                ):
+                    browser_control = BrowserControl(hand_tracker)
+                    browser_control.tab_nav(raised_fingers)
 
-            # app control, gesture left: index
-            if handedness.lower() == "right" and current_gesture == "index":
-                app_control = AppControl(hand_tracker)
-                app_control.window_nav(raised_fingers)
+                # mouse control, gesture left: index, middle and ring
+                if (
+                    handedness.lower() == "right"
+                    and current_gesture == "index, middle and ring"
+                ):
+                    mouse_control = MouseControl(hand_tracker, frame)
+                    mouse_control.control_mouse(raised_fingers, frame)
 
-            # browser control, gesture left: index and middle
-            if handedness.lower() == "right" and current_gesture == "index and middle":
-                browser_control = BrowserControl(hand_tracker)
-                browser_control.tab_nav(raised_fingers)
+                # user defined controls, gesture left: all
+                if handedness.lower() == "right" and current_gesture == "all":
+                    user_def_controls = UserDefControls(hand_tracker)
+                    user_def_controls.volume_control(raised_fingers)
 
-            # mouse control, gesture left: index, middle and ring
-            if (
-                handedness.lower() == "right"
-                and current_gesture == "index, middle and ring"
-            ):
-                mouse_control = MouseControl(hand_tracker, frame)
-                mouse_control.control_mouse(raised_fingers, frame)
-
-            # user defined controls, gesture left: all
-            if handedness.lower() == "right" and current_gesture == "all":
-                user_def_controls = UserDefControls(hand_tracker)
-                user_def_controls.volume_control(raised_fingers)
-
-    hand_tracker.frame_counter += 1
-
-    cv2.imshow("Frame", frame)
-    if cv2.waitKey(1) & 0xFF == ord("q"):
-        break
+        # hand_tracker.frame_counter += 1
+        if cv2.waitKey(1) & 0xFF == ord("q"):
+            break
+    except Exception as e:
+        print("error is: ", e)
 
 cap.release()
 cv2.destroyAllWindows()
