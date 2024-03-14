@@ -1,3 +1,5 @@
+#pip install imageio[ffmpeg] imageio[pyav]
+
 import tkinter as tk
 from tkinter import ttk, messagebox
 import imageio
@@ -12,7 +14,7 @@ class GestureEditor:
         self.master.rowconfigure(0, weight=1)
         
         self.style = ttk.Style(self.master)
-        self.master.tk.call("source", r"C:\Users\medha\Desktop\Forest-ttk-theme-master\Forest-ttk-theme-master\forest-dark.tcl")
+        self.master.tk.call("source", r".\Forest-ttk-theme-master\forest-dark.tcl")
         self.style.theme_use("forest-dark")
         
         self.init_variables()
@@ -24,13 +26,14 @@ class GestureEditor:
         self.selected_gesture = tk.StringVar(value="")
         self.key_bind_var = tk.StringVar()
         self.video_paths = {
-            "Video 1": r"C:\Users\medha\Desktop\Forest-ttk-theme-master\Forest-ttk-theme-master\toystory.mp4",
-            "Video 2": r"C:\Users\medha\Desktop\Forest-ttk-theme-master\Forest-ttk-theme-master\aa.mp4",
-            "Video 3": r"C:\Users\medha\Desktop\Forest-ttk-theme-master\Forest-ttk-theme-master\bb).mp4",
-            "Video 4": r"C:\Users\medha\Desktop\Forest-ttk-theme-master\Forest-ttk-theme-master\aa.mp4"
+            "Gesture 1": r".\Forest-ttk-theme-master\toystory.mp4",
+            "Gesture 2": r".\Forest-ttk-theme-master\aa.mp4",
+            "Gesture 3": r".\Forest-ttk-theme-master\bb).mp4",
+            "Gesture 4": r".\Forest-ttk-theme-master\aa.mp4",
+            "Gesture 5": r".\Forest-ttk-theme-master\bb).mp4"
         }
-        self.video_player = None
-        self.preview_label = None
+        # self.video_player = None
+        # self.preview_label = None
         
     def create_widgets(self):
         self.left_frame = ttk.Frame(self.master)
@@ -131,3 +134,4 @@ if __name__ == "__main__":
     root = tk.Tk()
     app = GestureEditor(root)
     root.mainloop()
+
