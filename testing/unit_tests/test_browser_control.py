@@ -5,7 +5,9 @@ import sys
 
 import pyautogui
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
+sys.path.append(
+    os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "script"))
+)
 
 from modules.browser_control import BrowserControl
 

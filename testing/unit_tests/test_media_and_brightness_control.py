@@ -6,7 +6,9 @@ import sys
 import pyautogui
 import numpy as np
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
+sys.path.append(
+    os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "script"))
+)
 
 from modules.media_and_brightness_control import MediaControl
 

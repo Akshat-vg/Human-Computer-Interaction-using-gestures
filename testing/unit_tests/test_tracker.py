@@ -5,7 +5,9 @@ import sys
 import cv2
 import mediapipe as mp
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
+sys.path.append(
+    os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "script"))
+)
 
 from modules.tracker import HandTracker
 
