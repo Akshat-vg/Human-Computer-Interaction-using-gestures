@@ -30,7 +30,7 @@ class hand_detector:
         self.tip_ids = [4, 8, 12, 16, 20]
         self.results = []
 
-    def find_hands(self, img, draw=True):
+    def find_hands(self, img, draw=False):
         img_RGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         self.results = self.hands.process(img_RGB)
         if self.results.multi_hand_landmarks:
@@ -41,7 +41,7 @@ class hand_detector:
                     )
         return img
 
-    def find_position(self, img, hand_no=0, draw=True):
+    def find_position(self, img, hand_no=0, draw=False):
         x_list = []
         y_list = []
         b_box = []

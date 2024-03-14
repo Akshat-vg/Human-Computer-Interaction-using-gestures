@@ -50,34 +50,27 @@ class MouseControl:
                 if raised_fingers == [0, 1, 1, 0, 0]:
                     if landmarks is not None and len(landmarks) != 0:
                         x1, y1 = landmarks[8][1:]
-                        print(f"X1: {x1} and Y1: {y1}")
+                        x2, y2 = landmarks[12][1:]
+                        dx, dy = (x1 + x2) // 2, (y1 + y2) // 2
+                        # cv2.circle(frame, (dx, dy), 15, (255, 0, 255), cv2.FILLED)
                         x3 = np.interp(
-                            x1,
+                            dx,
                             (self.frame_r, self.w_cam - self.frame_r),
                             (0, self.screen_width),
                         )
                         y3 = np.interp(
-                            y1,
+                            dy,
                             (self.frame_r, self.h_cam - self.frame_r),
                             (0, self.screen_height),
                         )
                         self.c_loc_x = self.p_loc_x + (x3 - self.p_loc_x) / 5
                         self.c_loc_y = self.p_loc_y + (y3 - self.p_loc_y) / 5
-                        autopy.mouse.move(
-                            self.screen_width - self.c_loc_x, self.c_loc_y
-                        )
+                        self.click_mouse.move(x3, y3)
                         self.p_loc_x, self.p_loc_y = self.c_loc_x, self.c_loc_y
-                        cv2.circle(
-                            frame,
-                            (self.w_cam // 2, self.h_cam // 2),
-                            15,
-                            (255, 0, 255),
-                            cv2.FILLED,
-                        )
-                        if x1 == self.w_cam / 2 and y1 == self.h_cam / 2:
-                            print("You are at the centre of the screen")
-                            print(f"X: {x1} and Y: {y1}")
-                            exit()
+                        # if x1 == self.w_cam / 2 and y1 == self.h_cam / 2:
+                        #     print("You are at the centre of the screen")
+                        #     print(f"X: {x1} and Y: {y1}")
+                        #     exit()
 
                 # everything except thumb
                 elif raised_fingers == [0, 1, 1, 1, 1]:
