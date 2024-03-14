@@ -1,29 +1,26 @@
 import math
 import platform
 import numpy as np
-import script.modules.hand_tracking_module as htm
 import autopy
+import pyautogui
 import cv2
 
 
 class MouseControl:
     def __init__(self, hand_tracker, frame):
         self.mouse = None
-        self.click_mouse = None
         self.hand_tracker = hand_tracker
         self.frame = frame
         self.os = platform.system()
-        self.screen_width, self.screen_height = autopy.screen.size()
+        self.screen_width, self.screen_height = pyautogui.size()
         self.w_cam, self.h_cam = 640, 480
         self.frame_r = 100
         self.p_loc_x, self.p_loc_y = 0, 0
         self.c_loc_x, self.c_loc_y = 0, 0
-        self.detector = htm.hand_detector(max_hands=1)
 
         if self.os == "Windows":
             import mouse
 
-            self.click_mouse = autopy.mouse
             self.mouse = mouse
 
         elif self.os == "Darwin":
@@ -35,8 +32,8 @@ class MouseControl:
     def control_mouse(self, raised_fingers, frame):
         try:
             # landmarks = self.hand_tracker.find_position(frame)
-            frame = self.detector.find_hands(frame)
-            landmarks, _ = self.detector.find_position(frame)
+            frame = self.hand_tracker.find_hands(frame)
+            landmarks, _ = self.hand_tracker.find_position(frame)
             if landmarks is not None and len(landmarks) != 0:
                 # print(f"landmarks: {landmarks}")
                 cv2.rectangle(
@@ -64,7 +61,7 @@ class MouseControl:
                         )
                         self.c_loc_x = self.p_loc_x + (x3 - self.p_loc_x) / 5
                         self.c_loc_y = self.p_loc_y + (y3 - self.p_loc_y) / 5
-                        self.click_mouse.move(x3, y3)
+                        self.mouse.move(x3, y3)
                         self.p_loc_x, self.p_loc_y = self.c_loc_x, self.c_loc_y
                         # if x1 == self.w_cam / 2 and y1 == self.h_cam / 2:
                         #     print("You are at the centre of the screen")

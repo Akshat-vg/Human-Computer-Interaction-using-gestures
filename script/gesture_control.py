@@ -1,5 +1,6 @@
 import cv2
 from modules.tracker import HandTracker
+from modules.hand_tracking_module import hand_detector
 from modules.media_and_brightness_control import MediaControl
 from modules.app_control import AppControl
 from modules.browser_control import BrowserControl
@@ -28,6 +29,7 @@ cap.set(3, 640)
 cap.set(4, 480)
 
 hand_tracker = HandTracker()
+detector = hand_detector(max_hands=1)
 
 prev_gesture = None
 current_gesture = None
@@ -87,7 +89,7 @@ while True:
                 handedness.lower() == "right"
                 and current_gesture == "index, middle and ring"
             ):
-                mouse_control = MouseControl(hand_tracker, frame)
+                mouse_control = MouseControl(detector, frame)
                 mouse_control.control_mouse(raised_fingers, frame)
 
             # user defined controls, gesture left: all
@@ -95,7 +97,7 @@ while True:
                 user_def_controls = UserDefControls(hand_tracker)
                 user_def_controls.volume_control(raised_fingers)
 
-    hand_tracker.frame_counter += 1
+    # hand_tracker.frame_counter += 1
 
     cv2.imshow("Frame", frame)
     if cv2.waitKey(1) & 0xFF == ord("q"):
