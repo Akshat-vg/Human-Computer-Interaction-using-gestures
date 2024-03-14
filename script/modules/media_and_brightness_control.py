@@ -37,13 +37,13 @@ class MediaControl:
                 )
                 device_volume = interface.QueryInterface(IAudioEndpointVolume)
                 # print(volume, device_volume.GetMasterVolumeLevel())
-                # check shit her, volume not increasing
                 device_volume.SetMasterVolumeLevel(volume, None)
 
             elif platform.system() == "Darwin":
                 import subprocess
 
                 volume = np.interp(ratio, [0.15, 1.5], [0, 100])
+                print(f"volume: {volume}")
                 subprocess.run(
                     ["osascript", "-e", f"set volume output volume {volume}"]
                 )
@@ -103,7 +103,8 @@ class MediaControl:
                 # link to repo: https://github.com/nriley/brightness
                 import subprocess
 
-                brightness = math.ceil(np.interp(ratio, [0.15, 1.5], [0, 100]))
+                brightness = np.interp(ratio, [0.15, 1.5], [0, 1])
+                print(f"brightness: {brightness}")
                 subprocess.run(["brightness", str(brightness)])
 
             else:

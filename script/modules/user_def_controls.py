@@ -1,5 +1,6 @@
 import pyautogui
 
+
 class UserDefControls:
     def __init__(self, hand_tracker):
         self.hand_tracker = hand_tracker

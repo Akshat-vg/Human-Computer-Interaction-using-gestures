@@ -3,11 +3,12 @@ import platform
 import pyautogui
 import numpy as np
 
+
 class MouseControl:
     def __init__(self, hand_tracker, frame):
         self.prev_x = 0
         self.prev_y = 0
-        self.mouse = None  
+        self.mouse = None
         self.hand_tracker = hand_tracker
         self.frame = frame
         self.os = platform.system()
@@ -47,7 +48,6 @@ class MouseControl:
         elif raised_fingers == [1, 1, 1, 1, 1]:
             # scroll down
             self.mouse.wheel(3)
-                
 
         if (
             landmarks is not None

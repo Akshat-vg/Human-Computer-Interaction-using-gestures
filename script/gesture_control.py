@@ -59,7 +59,6 @@ while True:
                 volume_control = MediaControl(hand_tracker)
                 volume_control.control_volume(frame)
 
-            # check shit here, need to realign values.
             # brightness control, gesture left: thumb and index
             if handedness.lower() == "right" and current_gesture == "thumb and index":
                 brightness_control = MediaControl(hand_tracker)
