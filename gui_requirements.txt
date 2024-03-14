@@ -1,0 +1,6 @@
+av==11.0.0
+imageio==2.34.0
+imageio-ffmpeg==0.4.9
+numpy==1.24.4
+pillow==10.2.0
+psutil==5.9.8
