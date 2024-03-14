@@ -43,7 +43,7 @@ class MediaControl:
                 import subprocess
 
                 volume = np.interp(ratio, [0.15, 1.5], [0, 100])
-                print(f"volume: {volume}")
+                # print(f"volume: {volume}") TODO: make a better print statement for debug mode where values are 0-100
                 subprocess.run(
                     ["osascript", "-e", f"set volume output volume {volume}"]
                 )
@@ -104,7 +104,7 @@ class MediaControl:
                 import subprocess
 
                 brightness = np.interp(ratio, [0.15, 1.5], [0, 1])
-                print(f"brightness: {brightness}")
+                # print(f"brightness: {brightness}") TODO: make a better print statement for debug mode where values are 0-100
                 subprocess.run(["brightness", str(brightness)])
 
             else:
