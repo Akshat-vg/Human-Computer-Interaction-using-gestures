@@ -1,10 +1,9 @@
 import math
 import platform
 import numpy as np
-import modules.hand_tracking_module as htm
+import script.modules.hand_tracking_module as htm
 import autopy
 import cv2
-
 
 
 class MouseControl:
