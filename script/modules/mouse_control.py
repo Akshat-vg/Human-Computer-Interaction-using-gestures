@@ -30,7 +30,6 @@ class MouseControl:
         landmarks = self.hand_tracker.find_position(frame, True)
         if landmarks is not None and len(landmarks) != 0:
             if raised_fingers == [0, 1, 1, 0, 0]:
-                print("thumb")
                 if landmarks is not None and len(landmarks) != 0:
                     x1, y1 = landmarks[8][1:]
                     x2, y2 = landmarks[12][1:]
