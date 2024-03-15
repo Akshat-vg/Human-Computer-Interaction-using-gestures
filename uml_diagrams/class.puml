@@ -1,0 +1,75 @@
+@startuml
+
+class HandTracker {
+    - hands: object
+    - frame_counter: int
+    + find_position(frame)
+    + detect_fingers(landmarks)
+}
+
+class mediapipe {
+    - hands: object
+    - hand_connections: object
+    + Hands()
+    + HandLandmarks()
+}
+
+
+class MediaControl {
+    - hand_tracker: HandTracker
+    + control_volume(frame)
+    + control_brightness(frame)
+    + control_media(fingers)
+}
+
+class AppControl {
+    - hand_tracker: HandTracker
+    + window_nav(fingers)
+}
+
+class BrowserControl {
+    - hand_tracker: HandTracker
+    + tab_nav(fingers)
+}
+
+class MouseControl {
+    - hand_tracker: HandTracker
+    - screen_dim: int, int
+    - cam_dim: int, int
+    - os: Platform
+    + control_mouse(fingers, frame)
+}
+
+class UserDefControls {
+    - hand_tracker: HandTracker
+    + volume_control(fingers)
+}
+
+class Platform {
+    + system()
+}
+
+class pyautogui {
+    - mouse: object
+    + size()
+    + hotkey(str)
+}
+
+HandTracker <.. MediaControl
+HandTracker <.. UserDefControls
+HandTracker <.. AppControl
+HandTracker <.. BrowserControl
+HandTracker <.. MouseControl
+MediaControl <.. Platform
+MediaControl <.. pyautogui
+MouseControl <.. Platform
+MouseControl <.. pyautogui
+AppControl <.. Platform
+AppControl <.. pyautogui
+mediapipe <.. HandTracker
+BrowserControl <.. Platform
+BrowserControl <.. pyautogui
+UserDefControls <.. Platform
+UserDefControls <.. pyautogui
+
+@enduml

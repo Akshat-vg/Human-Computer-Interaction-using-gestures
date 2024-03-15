@@ -1,0 +1,39 @@
+@startuml
+
+Start
+:Capture Video Frame;
+while (Success) is (true)
+    :Read\nFrame;
+    if (Hand\nDetected) then (yes)
+        :Process\nHand\nLandmarks;
+        if (Left\nHand) then (yes)
+            :Detect\nGesture;
+            if (Gesture\nRecognized) then (yes)
+                if (Thumb)
+                    :Control\nVolume;
+                elseif (Thumb and\nIndex)
+                    :Control\nBrightness;
+                elseif (Thumb,\nIndex\nand Middle)
+                    :Control\nMedia;
+                elseif (Index)
+                    :Navigate\nWindows;
+                elseif (Index\nand Middle)
+                    :Navigate\nTabs;
+                elseif (Index,\nMiddle\nand Ring)
+                    :Activate\nMouse\nControl;
+                else
+                    :Execute\nUser Defined\nControls;
+                endif
+            endif
+        elseif (Right\nHand) then (yes)
+            :Do\nNothing;
+        endif
+    else (No Hand Detected)
+        :Increment\nFrame\nCounter;
+    endif
+    :Display\nFrame;
+endwhile (Quit Command)
+
+End
+
+@enduml
