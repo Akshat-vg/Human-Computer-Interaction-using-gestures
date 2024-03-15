@@ -7,7 +7,6 @@ import pyautogui
 class MouseControl:
     def __init__(self, hand_tracker):
         self.mouse = None
-        self.click_mouse = None
         self.hand_tracker = hand_tracker
         self.os = platform.system()
         self.screen_width, self.screen_height = pyautogui.size()
