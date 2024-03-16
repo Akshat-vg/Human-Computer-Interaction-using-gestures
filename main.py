@@ -45,7 +45,7 @@ if customGestureJson == None:
     customGestureJson = collection.find_one({"_id": unique_id})
 
     with open("./script/modules/user_defined_data.json", "w") as f:
-        json.dump(customGestureJson, f) 
+        json.dump(customGestureJson, f)
 
 app = customtkinter.CTk()
 app.title("Gesture Navigator")
@@ -96,12 +96,21 @@ def print_hello_world(varName):
 
 def saveGestures():
     userDefinedControls = {}
-    userDefinedControls["index"] = gesture1_dropdown.get() if gesture1_dropdown.get() != "Select" else "null"
-    userDefinedControls["index and middle"] = gesture2_dropdown.get() if gesture2_dropdown.get() != "Select" else "null"
-    userDefinedControls["index, middle and ring"] = gesture3_dropdown.get() if gesture3_dropdown.get() != "Select" else "null"
-    userDefinedControls["index, middle, ring and little"] = gesture4_dropdown.get() if gesture4_dropdown.get() != "Select" else "null"
-    userDefinedControls["thumb"] = gesture5_dropdown.get() if gesture5_dropdown.get() != "Select" else "null"
-
+    userDefinedControls["index"] = (
+        gesture1_dropdown.get() if gesture1_dropdown.get() != "Select" else "null"
+    )
+    userDefinedControls["index and middle"] = (
+        gesture2_dropdown.get() if gesture2_dropdown.get() != "Select" else "null"
+    )
+    userDefinedControls["index, middle and ring"] = (
+        gesture3_dropdown.get() if gesture3_dropdown.get() != "Select" else "null"
+    )
+    userDefinedControls["index, middle, ring and little"] = (
+        gesture4_dropdown.get() if gesture4_dropdown.get() != "Select" else "null"
+    )
+    userDefinedControls["thumb"] = (
+        gesture5_dropdown.get() if gesture5_dropdown.get() != "Select" else "null"
+    )
 
     f = open("appList.json", "r")
     data = json.load(f)
@@ -120,16 +129,17 @@ def saveGestures():
     if customGestureJson is not None:
         customGestureJson["userDefinedControls"] = userDefinedControls
         collection.update_one({"_id": unique_id}, {"$set": customGestureJson})
-    
-    with open("./script/modules/user_defined_data.json", "w") as f:
-        json.dump(customGestureJson, f) 
 
+    with open("./script/modules/user_defined_data.json", "w") as f:
+        json.dump(customGestureJson, f)
 
 
 # First screen
 menuFrame.pack(fill="both", expand=True)
 launchButton = customtkinter.CTkButton(
-    menuFrame, text="Launch program", command=lambda: goToExecuteProgram("./script/gesture_control.py")
+    menuFrame,
+    text="Launch program",
+    command=lambda: goToExecuteProgram("./script/gesture_control.py"),
 )
 launchButton.pack(pady=80)
 customiseButton = customtkinter.CTkButton(

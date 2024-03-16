@@ -20,7 +20,7 @@ class UserDefControls:
     def user_controls(self, raised_fingers):
         if raised_fingers is not None and raised_fingers != [0, 0, 0, 0, 0]:
             if raised_fingers == [0, 1, 0, 0, 0]:
-                subprocess.run(
+                subprocess.Popen(
                     self.app_data["userDefinedControls"][
                         self.gesture_map[str(raised_fingers)]
                     ],
@@ -28,7 +28,7 @@ class UserDefControls:
                 )
 
             elif raised_fingers == [0, 1, 1, 0, 0]:
-                subprocess.run(
+                subprocess.Popen(
                     self.app_data["userDefinedControls"][
                         self.gesture_map[str(raised_fingers)]
                     ],
@@ -36,7 +36,7 @@ class UserDefControls:
                 )
 
             elif raised_fingers == [0, 1, 1, 1, 0]:
-                subprocess.run(
+                subprocess.Popen(
                     self.app_data["userDefinedControls"][
                         self.gesture_map[str(raised_fingers)]
                     ],
@@ -44,7 +44,7 @@ class UserDefControls:
                 )
 
             elif raised_fingers == [0, 1, 1, 1, 1]:
-                subprocess.run(
+                subprocess.Popen(
                     self.app_data["userDefinedControls"][
                         self.gesture_map[str(raised_fingers)]
                     ],
@@ -52,7 +52,7 @@ class UserDefControls:
                 )
 
             elif raised_fingers == [1, 0, 0, 0, 0]:
-                subprocess.run(
+                subprocess.Popen(
                     self.app_data["userDefinedControls"][
                         self.gesture_map[str(raised_fingers)]
                     ],
