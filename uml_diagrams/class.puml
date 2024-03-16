@@ -10,7 +10,6 @@ class HandTracker {
 class mediapipe {
     - hands: object
     - hand_connections: object
-    + Hands()
     + HandLandmarks()
 }
 
@@ -36,13 +35,12 @@ class MouseControl {
     - hand_tracker: HandTracker
     - screen_dim: int, int
     - cam_dim: int, int
-    - os: Platform
     + control_mouse(fingers, frame)
 }
 
 class UserDefControls {
     - hand_tracker: HandTracker
-    + volume_control(fingers)
+    + user_controls(fingers)
 }
 
 class Platform {
