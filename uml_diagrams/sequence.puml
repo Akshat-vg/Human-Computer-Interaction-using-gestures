@@ -1,0 +1,20 @@
+@startuml
+participant "User" as User
+participant "HandTracker" as HT
+
+User -> HT: Find Hand Position (Frame)
+activate HT
+HT -> HT: Process frame to detect hand landmarks
+alt Hand landmarks detected
+    HT --> User: Hand landmarks
+    loop for each hand gesture
+        User -> HT: Detect Raised Fingers (Hand Landmarks)
+        activate HT
+        HT -> HT: Analyze hand landmarks to detect raised fingers
+        HT --> User: Raised fingers information
+    end
+else No hand landmarks detected
+    HT --> User: No hand landmarks detected
+end
+deactivate HT
+@enduml
