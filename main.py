@@ -44,8 +44,8 @@ if customGestureJson == None:
 
     customGestureJson = collection.find_one({"_id": unique_id})
 
-with open("./script/modules/user_defined_data.json", "w") as f:
-    json.dump(customGestureJson, f) 
+    with open("./script/modules/user_defined_data.json", "w") as f:
+        json.dump(customGestureJson, f) 
 
 app = customtkinter.CTk()
 app.title("Gesture Navigator")
@@ -102,9 +102,6 @@ def saveGestures():
     userDefinedControls["index, middle, ring and little"] = gesture4_dropdown.get() if gesture4_dropdown.get() != "Select" else "null"
     userDefinedControls["thumb"] = gesture5_dropdown.get() if gesture5_dropdown.get() != "Select" else "null"
 
-    if customGestureJson is not None:
-        customGestureJson["userDefinedControls"] = userDefinedControls
-        collection.update_one({"_id": unique_id}, {"$set": customGestureJson})
 
     f = open("appList.json", "r")
     data = json.load(f)
@@ -120,6 +117,9 @@ def saveGestures():
         if i["displayName"] == userDefinedControls["thumb"]:
             userDefinedControls["thumb"] = i["shellName"]
 
+    if customGestureJson is not None:
+        customGestureJson["userDefinedControls"] = userDefinedControls
+        collection.update_one({"_id": unique_id}, {"$set": customGestureJson})
     
     with open("./script/modules/user_defined_data.json", "w") as f:
         json.dump(customGestureJson, f) 
