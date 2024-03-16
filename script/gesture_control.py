@@ -99,7 +99,7 @@ while True:
             # user defined controls, gesture left: all
             if handedness.lower() == "right" and current_gesture == "all":
                 user_def_controls = UserDefControls(hand_tracker)
-                user_def_controls.volume_control(raised_fingers)
+                user_def_controls.user_controls(raised_fingers)
 
     if not mouse_control_active:
         hand_tracker.frame_counter += 1
