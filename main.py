@@ -6,9 +6,12 @@ import socket
 import pymongo
 from dotenv import load_dotenv
 import os
+import threading
+from script.gesture_control import GestureControl
 
 load_dotenv()
-
+ges_con = GestureControl(True)
+ges_con_thread = threading.Thread(target=ges_con.run)
 
 def get_unique_id():
     mac = uuid.UUID(int=uuid.getnode()).hex[-12:]
@@ -75,12 +78,8 @@ def goToCustomise():
 
 
 # Function to run python script
-def goToExecuteProgram(filePath):
-    print("Starting Program")
-    # subprocess.run(["python", filePath])
-    # we will run the python code in the filePath in another thread
-    # so that the GUI is not blocked
-    subprocess.Popen(["python", filePath])
+def launchGestureControl():
+    ges_con_thread.start()
 
 
 # Function to switch back to the first screen
@@ -139,7 +138,7 @@ menuFrame.pack(fill="both", expand=True)
 launchButton = customtkinter.CTkButton(
     menuFrame,
     text="Launch program",
-    command=lambda: goToExecuteProgram("./script/gesture_control.py"),
+    command=lambda: launchGestureControl(),
 )
 launchButton.pack(pady=80)
 customiseButton = customtkinter.CTkButton(
@@ -227,3 +226,4 @@ backToMainMenu = customtkinter.CTkButton(
 backToMainMenu.pack_configure(anchor="center", pady=20)
 
 app.mainloop()
+ges_con.runFlag = False
