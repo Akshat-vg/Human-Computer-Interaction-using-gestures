@@ -107,6 +107,3 @@ class GestureControl:
 
         self.cap.release()
         cv2.destroyAllWindows()
-
-gesture_control = GestureControl()
-gesture_control.run()

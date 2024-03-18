@@ -10,8 +10,8 @@ import threading
 from script.gesture_control import GestureControl
 
 load_dotenv()
+
 ges_con = GestureControl(True)
-ges_con_thread = threading.Thread(target=ges_con.run)
 
 def get_unique_id():
     mac = uuid.UUID(int=uuid.getnode()).hex[-12:]
@@ -79,7 +79,9 @@ def goToCustomise():
 
 # Function to run python script
 def launchGestureControl():
+    ges_con_thread = threading.Thread(target=ges_con.run)
     ges_con_thread.start()
+    pass
 
 
 # Function to switch back to the first screen
