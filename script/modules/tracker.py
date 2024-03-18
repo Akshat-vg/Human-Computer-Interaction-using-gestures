@@ -11,9 +11,10 @@ class HandTracker:
         self.cooldown_frames = 15
         self.smooth_cooldown_frames = 5
 
-    def detect_raised_fingers(self, lst, hand_type):
-        if self.frame_counter % self.cooldown_frames != 0:
+    def detect_raised_fingers(self, lst, hand_type, mouse_control=False):
+        if self.frame_counter % self.cooldown_frames != 0 and mouse_control == False:
             return None
+
         if hand_type not in ["left", "right"]:
             raise ValueError(
                 "Invalid hand_type. It should be either 'left' or 'right'."
@@ -57,11 +58,14 @@ class HandTracker:
     #     print(downwards_fingers[::-1] if hand_type == "left" else downwards_fingers[1:])
     #     return downwards_fingers[::-1] if hand_type == "left" else downwards_fingers[1:]
 
-    def find_position(self, frame):
-        if self.frame_counter % self.smooth_cooldown_frames != 0:
+    def find_position(self, frame, mouse_control=False):
+        if (
+            self.frame_counter % self.smooth_cooldown_frames != 0
+            and mouse_control == False
+        ):
             return None
-        results = self.hands.process(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
         landmarks = []
+        results = self.hands.process(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
         if results.multi_hand_landmarks:
             for hand_landmarks in results.multi_hand_landmarks:
                 for id, lm in enumerate(hand_landmarks.landmark):
