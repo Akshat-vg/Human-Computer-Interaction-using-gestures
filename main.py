@@ -7,11 +7,10 @@ import pymongo
 from dotenv import load_dotenv
 import os
 import threading
-from script.gesture_control import GestureControl
+from gesture_control import GestureControl
 
 load_dotenv()
-
-ges_con = GestureControl(True)
+gescon = None
 
 def get_unique_id():
     mac = uuid.UUID(int=uuid.getnode()).hex[-12:]
@@ -79,10 +78,9 @@ def goToCustomise():
 
 # Function to run python script
 def launchGestureControl():
-    ges_con_thread = threading.Thread(target=ges_con.run)
-    ges_con_thread.start()
-    pass
-
+    global gescon
+    gescon = GestureControl()
+    gescon.run()
 
 # Function to switch back to the first screen
 def backToMenuFrame():
@@ -144,7 +142,7 @@ launchButton = customtkinter.CTkButton(
 )
 launchButton.pack(pady=80)
 customiseButton = customtkinter.CTkButton(
-    menuFrame, text="Customise gestures", command=lambda: goToCustomise()
+    menuFrame, text="Customise gestures", command=lambda: threading.Thread(target=goToCustomise).start()
 )
 customiseButton.pack(pady=0)
 
@@ -228,4 +226,6 @@ backToMainMenu = customtkinter.CTkButton(
 backToMainMenu.pack_configure(anchor="center", pady=20)
 
 app.mainloop()
-ges_con.runFlag = False
+
+if gescon != None:
+    gescon.runFlag = False
