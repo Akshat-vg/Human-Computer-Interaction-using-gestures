@@ -5,3 +5,4 @@ testing/unit_tests/__pycache__/
 .vscode/
 .env
 1.20.0
+user_defined_data.json
