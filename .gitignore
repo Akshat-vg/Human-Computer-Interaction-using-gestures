@@ -1,6 +1,4 @@
-script/modules/__pycache__/
-modules/__pycache__/
-testing/unit_tests/__pycache__/
+__pycache__
 .DS_Store
 .vscode/
 .env
