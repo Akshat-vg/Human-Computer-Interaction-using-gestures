@@ -1,5 +1,6 @@
-modules/__pycache__/
+__pycache__
 .DS_Store
 .vscode/
 .env
 1.20.0
+user_defined_data.json

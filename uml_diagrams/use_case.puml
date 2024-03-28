@@ -1,0 +1,35 @@
+@startuml
+left to right direction
+
+actor User
+
+rectangle "Media Control" {
+    usecase "Control Volume" as UC1
+    usecase "Control Brightness" as UC2
+    usecase "Control Media" as UC3
+}
+
+rectangle "Application Control" {
+    usecase "Navigate Windows/Applications" as UC4
+}
+
+rectangle "Browser Control" {
+    usecase "Navigate Browser Tabs" as UC5
+}
+
+rectangle "Mouse Control" {
+    usecase "Control Mouse" as UC6
+}
+
+User --> UC1
+User --> UC2
+User --> UC3
+User --> UC4
+User --> UC5
+User --> UC6
+
+UC3 --> UC1
+UC3 --> UC2
+UC6 --> UC4
+UC6 --> UC5
+@enduml

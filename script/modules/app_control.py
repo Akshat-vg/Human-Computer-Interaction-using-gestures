@@ -32,7 +32,7 @@ class AppControl:
                 if platform.system() == "Darwin":
                     pyautogui.hotkey("command", "w")
                 elif platform.system() == "Windows":
-                    pyautogui.hotkey("alt", "fn", "f4" )
+                    pyautogui.hotkey("alt", "fn", "f4")
             elif raised_fingers == [0, 1, 0, 0, 1]:
                 # switch window(same application different windows) forward, gesture: index and little
                 if platform.system() == "Darwin":

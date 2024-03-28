@@ -45,4 +45,3 @@ class BrowserControl:
                     pyautogui.hotkey("command", "n")
                 elif platform.system() == "Windows":
                     pyautogui.hotkey("ctrl", "n")
-                
