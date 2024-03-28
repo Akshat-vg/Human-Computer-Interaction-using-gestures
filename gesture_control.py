@@ -1,10 +1,10 @@
 import cv2
-from modules.tracker import HandTracker
-from modules.media_and_brightness_control import MediaControl
-from modules.app_control import AppControl
-from modules.browser_control import BrowserControl
-from modules.user_def_controls import UserDefControls
-from modules.mouse_control import MouseControl
+from script.modules.tracker import HandTracker
+from script.modules.media_and_brightness_control import MediaControl
+from script.modules.app_control import AppControl
+from script.modules.browser_control import BrowserControl
+from script.modules.user_def_controls import UserDefControls
+from script.modules.mouse_control import MouseControl
 
 
 class GestureControl:
@@ -64,10 +64,7 @@ class GestureControl:
                         brightness_control.control_brightness(frame)
 
                     # media control, gesture left: thumb, index and middle
-                    if (
-                        handedness.lower() == "right"
-                        and self.current_gesture == "thumb, index and middle"
-                    ):
+                    if (handedness.lower() == "right" and self.current_gesture == "thumb, index and middle"):
                         media_control = MediaControl(self.hand_tracker)
                         media_control.control_media(raised_fingers)
 
@@ -82,10 +79,7 @@ class GestureControl:
                         browser_control.tab_nav(raised_fingers)
 
                     # mouse control, gesture left: index, middle and ring
-                    if (
-                        handedness.lower() == "right"
-                        and self.current_gesture == "index, middle and ring"
-                    ):
+                    if (handedness.lower() == "right" and self.current_gesture == "index, middle and ring"):
                         self.mouse_control_active = True
                         mouse_control = MouseControl(self.hand_tracker)
                         mouse_control.control_mouse(raised_fingers, frame)
