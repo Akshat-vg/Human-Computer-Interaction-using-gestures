@@ -7,8 +7,12 @@ import pymongo
 from dotenv import load_dotenv
 import os
 from PIL import Image, ImageTk
+
 # from script.gesture_control import GestureControl
 import threading
+
+from script.gesture_control import GestureControl
+
 
 class GestureAnimation:
     def __init__(self, root, anchor, gif_path):
@@ -24,7 +28,7 @@ class GestureAnimation:
 
         # Create a label to display the GIF
         self.label = customtkinter.CTkLabel(root, text="")
-        if anchor == 'left':
+        if anchor == "left":
             self.label.grid(row=1, column=0, padx=30)
         else:
             self.label.grid(row=1, column=1)
@@ -56,6 +60,7 @@ class GestureAnimation:
 
     def display_frames(self):
         try:
+
             def update_frame(idx):
                 if self.runFlag:
                     frame = self.frames[idx]
@@ -66,7 +71,9 @@ class GestureAnimation:
         except Exception as e:
             pass
 
+
 load_dotenv()
+
 
 def get_unique_id():
     mac = uuid.UUID(int=uuid.getnode()).hex[-12:]
@@ -124,10 +131,11 @@ menuFrame = customtkinter.CTkFrame(app, corner_radius=25, border_width=5)
 customiseFrame = customtkinter.CTkFrame(app)
 tutorialFrame = customtkinter.CTkFrame(app)
 
+
 def getAppNames():
     # read a file appList.json and fetch names
     # return the list of app names
-    data = json.load(f)
+    # data = json.load(f)
     ls = ["Select"]
     for i in data:
         ls.append(i["displayName"])
@@ -139,17 +147,20 @@ def goToCustomise():
     menuFrame.pack_forget()
     customiseFrame.pack(fill="both", expand=True)
 
+
 # Function to switch to the third screen
 def goToTutorial():
     menuFrame.pack_forget()
     tutorialFrame.pack(fill="both", expand=True)
 
+
 # Function to run python script
 def launchGestureControl():
-    # ges_con = GestureControl(True)
-    # ges_con_thread = threading.Thread(target=ges_con.run)
-    # ges_con_thread.start()
-    pass
+    print("launched now only")
+    ges_con = GestureControl(True)
+    ges_con_thread = threading.Thread(target=ges_con.run)
+    ges_con_thread.start()
+    # pass
 
 
 # Function to switch back to the first screen
@@ -158,9 +169,11 @@ def backToMenuFrame():
     tutorialFrame.pack_forget()
     menuFrame.pack(fill="both", expand=True, pady=60, padx=90)
 
+
 # Function to print "Hello, World!"
 def print_hello_world(varName):
     print("Hello, World!", varName)
+
 
 def saveGestures(data):
     userDefinedControls = {}
@@ -199,11 +212,14 @@ def saveGestures(data):
     with open("./script/modules/user_defined_data.json", "w") as f:
         json.dump(customGestureJson, f)
 
+
 ############################################################################################################
 # First screen
 menuFrame.pack(fill="both", expand=True, pady=60, padx=90)
 launchButton = customtkinter.CTkButton(
-    menuFrame, text="Launch program", command=lambda: launchGestureControl(),
+    menuFrame,
+    text="Launch program",
+    command=lambda: launchGestureControl(),
 )
 launchButton.pack(pady=50)
 
@@ -233,7 +249,7 @@ customiseDesc2.pack(pady=5)
 
 # Gesture 1
 gesture1_frame = customtkinter.CTkFrame(customiseFrame)
-gesture1_frame.pack(fill="both", pady = 5, ipadx=80, padx = 50, ipady=10)
+gesture1_frame.pack(fill="both", pady=5, ipadx=80, padx=50, ipady=10)
 
 gesture1_label = customtkinter.CTkLabel(gesture1_frame, text="Gesture 1")
 gesture1_label.pack(side="left", pady=5, padx=80)
@@ -248,7 +264,7 @@ gesture1_frame.pack_configure(anchor="center")
 
 # Gesture 2
 gesture2_frame = customtkinter.CTkFrame(customiseFrame)
-gesture2_frame.pack(fill="both", pady = 5, ipadx=80, padx = 50, ipady=10)
+gesture2_frame.pack(fill="both", pady=5, ipadx=80, padx=50, ipady=10)
 
 gesture2_label = customtkinter.CTkLabel(gesture2_frame, text="Gesture 2")
 gesture2_label.pack(side="left", pady=5, padx=80)
@@ -257,13 +273,16 @@ gesture2_dropdown = customtkinter.CTkComboBox(gesture2_frame, values=getAppNames
 gesture2_dropdown.pack(side="left", pady=5, padx=30)
 if customGestureJson is not None:
     for i in data:
-        if i["shellName"] == customGestureJson["userDefinedControls"]["index and middle"]:
+        if (
+            i["shellName"]
+            == customGestureJson["userDefinedControls"]["index and middle"]
+        ):
             gesture2_dropdown.set(i["displayName"])
 gesture2_frame.pack_configure(anchor="center")
 
 # Gesture 3
 gesture3_frame = customtkinter.CTkFrame(customiseFrame)
-gesture3_frame.pack(fill="both", pady = 5, ipadx=80, padx = 50, ipady=10)
+gesture3_frame.pack(fill="both", pady=5, ipadx=80, padx=50, ipady=10)
 
 gesture3_label = customtkinter.CTkLabel(gesture3_frame, text="Gesture 3")
 gesture3_label.pack(side="left", pady=5, padx=80)
@@ -272,13 +291,16 @@ gesture3_dropdown = customtkinter.CTkComboBox(gesture3_frame, values=getAppNames
 gesture3_dropdown.pack(side="left", pady=5, padx=30)
 if customGestureJson is not None:
     for i in data:
-        if i["shellName"] == customGestureJson["userDefinedControls"]["index, middle and ring"]:
+        if (
+            i["shellName"]
+            == customGestureJson["userDefinedControls"]["index, middle and ring"]
+        ):
             gesture3_dropdown.set(i["displayName"])
 gesture3_frame.pack_configure(anchor="center")
 
 # Gesture 4
 gesture4_frame = customtkinter.CTkFrame(customiseFrame)
-gesture4_frame.pack(fill="both", pady = 5, ipadx=80, padx = 50, ipady=10)
+gesture4_frame.pack(fill="both", pady=5, ipadx=80, padx=50, ipady=10)
 
 gesture4_label = customtkinter.CTkLabel(gesture4_frame, text="Gesture 4")
 gesture4_label.pack(side="left", pady=5, padx=80)
@@ -287,13 +309,18 @@ gesture4_dropdown = customtkinter.CTkComboBox(gesture4_frame, values=getAppNames
 gesture4_dropdown.pack(side="left", pady=5, padx=30)
 if customGestureJson is not None:
     for i in data:
-        if i["shellName"] == customGestureJson["userDefinedControls"]["index, middle, ring and little"]:
+        if (
+            i["shellName"]
+            == customGestureJson["userDefinedControls"][
+                "index, middle, ring and little"
+            ]
+        ):
             gesture4_dropdown.set(i["displayName"])
 gesture4_frame.pack_configure(anchor="center")
 
 # Gesture 5
 gesture5_frame = customtkinter.CTkFrame(customiseFrame)
-gesture5_frame.pack(fill="both", pady = 5, ipadx=80, padx = 50, ipady=10)
+gesture5_frame.pack(fill="both", pady=5, ipadx=80, padx=50, ipady=10)
 
 gesture5_label = customtkinter.CTkLabel(gesture5_frame, text="Gesture 5")
 gesture5_label.pack(side="left", pady=5, padx=80)
@@ -312,7 +339,9 @@ saveButton = customtkinter.CTkButton(
     customiseFrame, text="Save", command=lambda: saveGestures(data)
 )
 saveButton.pack_configure(anchor="center", pady=20)
-backToMainMenu = customtkinter.CTkButton(customiseFrame, text="Back", command=lambda: backToMenuFrame())
+backToMainMenu = customtkinter.CTkButton(
+    customiseFrame, text="Back", command=lambda: backToMenuFrame()
+)
 backToMainMenu.pack_configure(anchor="center", pady=0)
 
 ############################################################################################################
@@ -322,7 +351,9 @@ backToMainMenu.pack_configure(anchor="center", pady=0)
 # Create a dropdown list
 options = list(anim_data.keys())
 selected_option = customtkinter.StringVar()
-dropdown = customtkinter.CTkComboBox(tutorialFrame, values=options, variable=selected_option)
+dropdown = customtkinter.CTkComboBox(
+    tutorialFrame, values=options, variable=selected_option
+)
 dropdown.set(options[0])
 dropdown.pack(pady=20)
 
@@ -342,16 +373,23 @@ left_gif_label = GestureAnimation(gif_frame, "left", "animations\\1.gif")
 right_gif_label = GestureAnimation(gif_frame, "right", "animations\\2.gif")
 
 # Create a frame for the heading and description
-description_frame = customtkinter.CTkFrame(tutorialFrame,width=400,height=200,corner_radius=25, border_width=5)
+description_frame = customtkinter.CTkFrame(
+    tutorialFrame, width=400, height=200, corner_radius=25, border_width=5
+)
 description_frame.pack(ipady=5, pady=10)
 
 # Create the heading
-heading = customtkinter.CTkLabel(description_frame, text="Description", font=("Arial", 16, "bold"))
+heading = customtkinter.CTkLabel(
+    description_frame, text="Description", font=("Arial", 16, "bold")
+)
 heading.pack(pady=10)
 
 # Create the description text
-description_label = customtkinter.CTkLabel(description_frame, text=anim_data[options[0]]["description"], wraplength=500)
+description_label = customtkinter.CTkLabel(
+    description_frame, text=anim_data[options[0]]["description"], wraplength=500
+)
 description_label.pack(pady=5, padx=20)
+
 
 # Function to update the GIFs based on the selected option
 def update_gifs(*_):
@@ -363,11 +401,14 @@ def update_gifs(*_):
     left_gif_label.update_gif(left_gif_path)
     right_gif_label.update_gif(right_gif_path)
 
+
 # Bind the update_gifs function to the dropdown selection
 selected_option.trace_add("write", update_gifs)
 
 # Create a button to go back to the main menu
-back_button = customtkinter.CTkButton(tutorialFrame, text="Back", command=backToMenuFrame)
+back_button = customtkinter.CTkButton(
+    tutorialFrame, text="Back", command=backToMenuFrame
+)
 back_button.pack()
 
 app.mainloop()
