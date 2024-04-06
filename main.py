@@ -9,9 +9,7 @@ from script.gesture_control import GestureControl
 import threading
 from script.modules.GestureAnimation import GestureAnimation
 
-
 load_dotenv()
-
 
 def get_unique_id():
     mac = uuid.UUID(int=uuid.getnode()).hex[-12:]
@@ -32,10 +30,10 @@ collection = db["user-config"]
 
 customGestureJson = collection.find_one({"_id": unique_id})
 
-f = open("script\\appList.json", "r")
+f = open("resources\\appList.json", "r")
 data = json.load(f)
 
-f = open("script\\anim_data.json", "r")
+f = open("resources\\anim_data.json", "r")
 anim_data = json.load(f)
 
 if customGestureJson == None:
@@ -61,7 +59,7 @@ if customGestureJson == None:
 app = customtkinter.CTk()
 app.title("Gesture Navigator")
 app.geometry("600x500")
-app.iconbitmap("dark.ico")
+app.iconbitmap("resources\\dark.ico")
 
 # system mode
 customtkinter.set_appearance_mode("system")
