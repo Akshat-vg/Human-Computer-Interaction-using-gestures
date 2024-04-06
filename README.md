@@ -46,10 +46,10 @@ This project was made possible thanks to the collaborative efforts of the follow
 
 | Contributor                  | Role                           |
 |-----------------------|--------------------------------|
-| Medhaj Bhandari       | Project Lead, GUI Development  |
+| Medhaj Bhandari       | GUI Development, Blender Animations  |
 | Akshat V Ghanathay    | Gesture Recognition Algorithm, Testing |
-| Aditya Chintala       | Database Integration, GUI Development |
-| Adithya Kramadhati    | Gesture Recognition Algorithm, Documentation |
+| Aditya Chintala       | Database Integration, GUI Development, Windows specific algorithm |
+| Adithya Kramadhati    | Gesture Recognition Algorithm, Documentation, GUI Development |
 
 
 ## Contributing

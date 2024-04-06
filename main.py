@@ -2,74 +2,12 @@ import customtkinter
 import json
 import uuid
 import socket
-from numpy import pad
 import pymongo
 from dotenv import load_dotenv
 import os
-from PIL import Image, ImageTk
-
-# from script.gesture_control import GestureControl
-import threading
-
 from script.gesture_control import GestureControl
-
-
-class GestureAnimation:
-    def __init__(self, root, anchor, gif_path):
-        self.root = root
-        self.gif_path = gif_path
-        self.anchor = anchor
-
-        # Load the GIF
-        self.gif = Image.open(gif_path)
-        self.frames = []
-        self.load_frames()
-        self.runFlag = True
-
-        # Create a label to display the GIF
-        self.label = customtkinter.CTkLabel(root, text="")
-        if anchor == "left":
-            self.label.grid(row=1, column=0, padx=30)
-        else:
-            self.label.grid(row=1, column=1)
-
-        # Display the GIF
-        self.display_frames()
-
-    def update_gif(self, gif_path):
-        try:
-            # Remove old frames
-            self.runFlag = False
-            self.frames.clear()
-
-            # Load the new GIF
-            self.gif = Image.open(gif_path)
-            self.load_frames()
-            self.runFlag = True
-            self.display_frames()
-        except Exception as e:
-            pass
-
-    def load_frames(self):
-        try:
-            while True:
-                self.frames.append(ImageTk.PhotoImage(self.gif.copy()))
-                self.gif.seek(len(self.frames))
-        except EOFError:
-            pass
-
-    def display_frames(self):
-        try:
-
-            def update_frame(idx):
-                if self.runFlag:
-                    frame = self.frames[idx]
-                    self.label.configure(image=frame)
-                    self.root.after(50, update_frame, (idx + 1) % len(self.frames))
-
-            update_frame(0)
-        except Exception as e:
-            pass
+import threading
+from script.modules.GestureAnimation import GestureAnimation
 
 
 load_dotenv()
@@ -80,6 +18,8 @@ def get_unique_id():
     hostname = socket.gethostname()
     return f"{mac}-{hostname}"
 
+ges_con = GestureControl(True)
+ges_con_thread = threading.Thread(target=ges_con.run)
 
 unique_id = get_unique_id()
 print(unique_id)
@@ -135,7 +75,6 @@ tutorialFrame = customtkinter.CTkFrame(app)
 def getAppNames():
     # read a file appList.json and fetch names
     # return the list of app names
-    # data = json.load(f)
     ls = ["Select"]
     for i in data:
         ls.append(i["displayName"])
@@ -156,12 +95,11 @@ def goToTutorial():
 
 # Function to run python script
 def launchGestureControl():
-    print("launched now only")
-    ges_con = GestureControl(True)
-    ges_con_thread = threading.Thread(target=ges_con.run)
-    ges_con_thread.start()
-    # pass
-
+    if not ges_con_thread.is_alive():
+        ges_con.runFlag = True
+        ges_con_thread.start()
+    else :
+        print("The program is already running. Please wait")
 
 # Function to switch back to the first screen
 def backToMenuFrame():
@@ -224,7 +162,7 @@ launchButton = customtkinter.CTkButton(
 launchButton.pack(pady=50)
 
 customiseButton = customtkinter.CTkButton(
-    menuFrame, text="Customise gestures", command=lambda: goToCustomise()
+    menuFrame, text="Customise gestures", command=lambda: threading.Thread(target=goToCustomise).start()
 )
 customiseButton.pack(pady=30)
 
@@ -393,14 +331,13 @@ description_label.pack(pady=5, padx=20)
 
 # Function to update the GIFs based on the selected option
 def update_gifs(*_):
-    option = selected_option.get()
-    left_gif_path = anim_data[option]["left"]
-    right_gif_path = anim_data[option]["right"]
-    description_label.configure(text=anim_data[option]["description"])
-
-    left_gif_label.update_gif(left_gif_path)
-    right_gif_label.update_gif(right_gif_path)
-
+    try:
+        option = selected_option.get()
+        description_label.configure(text=anim_data[option]["description"])
+        left_gif_label.update_gif(anim_data[option]["left"])
+        right_gif_label.update_gif(anim_data[option]["right"])
+    except Exception as e:
+        pass
 
 # Bind the update_gifs function to the dropdown selection
 selected_option.trace_add("write", update_gifs)
@@ -412,3 +349,9 @@ back_button = customtkinter.CTkButton(
 back_button.pack()
 
 app.mainloop()
+
+# To be executed when the app is closed
+ges_con.runFlag = False
+ges_con_thread.join()
+
+client.close()
