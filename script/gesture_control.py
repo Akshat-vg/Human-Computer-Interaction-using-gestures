@@ -9,10 +9,6 @@ from script.modules.mouse_control import MouseControl
 
 class GestureControl:
     def __init__(self, runFlag=True):
-        self.cap = cv2.VideoCapture(0)
-        self.cap.set(3, 640)
-        self.cap.set(4, 480)
-        self.hand_tracker = HandTracker()
         self.prev_gesture = None
         self.current_gesture = None
         self.mouse_control_active = False
@@ -34,6 +30,10 @@ class GestureControl:
         return gestures.get(tuple(raised_fingers))
 
     def run(self):
+        self.cap = cv2.VideoCapture(0)
+        self.cap.set(3, 640)
+        self.cap.set(4, 480)
+        self.hand_tracker = HandTracker()
         while True:
             success, frame = self.cap.read()
             if not success or not self.runFlag:
