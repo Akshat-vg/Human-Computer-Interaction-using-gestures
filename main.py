@@ -1,11 +1,3 @@
-import cv2
-import mediapipe as mp
-from modules.tracker import HandTracker
-from modules.media_and_brightness_control import MediaControl
-from modules.app_control import AppControl
-from modules.browser_control import BrowserControl
-from modules.user_def_controls import UserDefControls
-from modules.mouse_control import MouseControl
 import customtkinter
 import json
 import uuid
